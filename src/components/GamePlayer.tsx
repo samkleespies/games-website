@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { createPortal } from 'react-dom'
 import { X, Maximize2, Minimize2, RotateCcw, Volume2, VolumeX, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -19,21 +20,71 @@ export default function GamePlayer({ game, isOpen, onClose }: GamePlayerProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isMuted, setIsMuted] = useState(false)
   const [showControls, setShowControls] = useState(true)
+  const [hideControlsTimeout, setHideControlsTimeout] = useState<NodeJS.Timeout | null>(null)
+  const [mounted, setMounted] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
       setIsLoading(true)
+      setShowControls(true) // Always show controls when opening
     } else {
       document.body.style.overflow = 'unset'
     }
 
     return () => {
       document.body.style.overflow = 'unset'
+      if (hideControlsTimeout) {
+        clearTimeout(hideControlsTimeout)
+      }
     }
-  }, [isOpen])
+  }, [isOpen, hideControlsTimeout])
+
+  const handleMouseMove = () => {
+    setShowControls(true)
+    
+    if (hideControlsTimeout) {
+      clearTimeout(hideControlsTimeout)
+    }
+    
+    if (isFullscreen) {
+      const timeout = setTimeout(() => {
+        setShowControls(false)
+      }, 3000)
+      setHideControlsTimeout(timeout)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    if (isFullscreen) {
+      setShowControls(false)
+    }
+  }
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const isCurrentlyFullscreen = !!document.fullscreenElement
+      setIsFullscreen(isCurrentlyFullscreen)
+      
+      if (!isCurrentlyFullscreen) {
+        setShowControls(true)
+        if (hideControlsTimeout) {
+          clearTimeout(hideControlsTimeout)
+        }
+      }
+    }
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange)
+    }
+  }, [hideControlsTimeout])
 
   const handleFullscreen = () => {
     if (!isFullscreen && containerRef.current) {
@@ -45,7 +96,10 @@ export default function GamePlayer({ game, isOpen, onClose }: GamePlayerProps) {
         document.exitFullscreen()
       }
     }
-    setIsFullscreen(!isFullscreen)
+  }
+
+  const handleDownload = () => {
+    window.open(`/api/games/${game.id}/download`, '_blank')
   }
 
   const handleRestart = () => {
@@ -59,15 +113,15 @@ export default function GamePlayer({ game, isOpen, onClose }: GamePlayerProps) {
     setIsLoading(false)
   }
 
-  if (!isOpen) return null
+  if (!isOpen || !mounted) return null
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+        className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm"
         onClick={onClose}
       >
         <motion.div
@@ -84,10 +138,16 @@ export default function GamePlayer({ game, isOpen, onClose }: GamePlayerProps) {
         >
           <Card className="h-full flex flex-col overflow-hidden bg-background border-2 border-white/20">
             {/* Header */}
-            <div 
+            <motion.div 
+              initial={{ opacity: 1 }}
+              animate={{ 
+                opacity: showControls ? 1 : 0,
+                y: showControls ? 0 : -20
+              }}
+              transition={{ duration: 0.3 }}
               className={cn(
-                "flex items-center justify-between p-4 bg-gradient-to-r from-background to-secondary/20 border-b border-white/10 transition-all duration-300",
-                !showControls && isFullscreen && "opacity-0 pointer-events-none"
+                "flex items-center justify-between p-4 bg-gradient-to-r from-background to-secondary/20 border-b border-white/10",
+                !showControls && isFullscreen && "pointer-events-none"
               )}
               onMouseEnter={() => setShowControls(true)}
             >
@@ -147,77 +207,104 @@ export default function GamePlayer({ game, isOpen, onClose }: GamePlayerProps) {
                   <X className="h-4 w-4" />
                 </Button>
               </div>
-            </div>
+            </motion.div>
 
             {/* Game Container */}
             <div 
               className="flex-1 relative bg-black"
-              onMouseMove={() => setShowControls(true)}
-              onMouseLeave={() => isFullscreen && setShowControls(false)}
+              onMouseMove={handleMouseMove}
             >
-              {/* Loading Overlay */}
-              {isLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/20 to-purple-900/20 backdrop-blur-sm z-10">
-                  <div className="text-center">
-                    <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <h3 className="text-xl font-bold mb-2">Loading {game.title}</h3>
-                    <p className="text-muted-foreground">Preparing your gaming experience...</p>
+              {/* Check if game requires download */}
+              {game.requirements?.webgl === false ? (
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/20 to-purple-900/20 backdrop-blur-sm">
+                  <div className="text-center max-w-md mx-auto p-8">
+                    <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <span className="text-4xl">🚀</span>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4">{game.title}</h3>
+                    <p className="text-muted-foreground mb-6">
+                      This game requires Godot 4.4+ to run. Download the project files and open in Godot to play!
+                    </p>
+                    <div className="space-y-4">
+                      <Button 
+                        onClick={handleDownload}
+                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                      >
+                        📥 Download Game (.zip)
+                      </Button>
+                      <p className="text-xs text-muted-foreground">
+                        Includes source code, assets, and README with instructions
+                      </p>
+                    </div>
                   </div>
                 </div>
-              )}
+              ) : (
+                <>
+                  {/* Loading Overlay */}
+                  {isLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/20 to-purple-900/20 backdrop-blur-sm z-10">
+                      <div className="text-center">
+                        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                        <h3 className="text-xl font-bold mb-2">Loading {game.title}</h3>
+                        <p className="text-muted-foreground">Preparing your gaming experience...</p>
+                      </div>
+                    </div>
+                  )}
 
-              {/* Game iframe */}
-              <iframe
-                ref={iframeRef}
-                src={game.gameUrl}
-                className="w-full h-full border-0"
-                allow="fullscreen; gamepad; microphone; camera"
-                onLoad={handleGameLoad}
-                title={game.title}
-              />
+                  {/* Game iframe */}
+                  <iframe
+                    ref={iframeRef}
+                    src={game.gameUrl}
+                    className="w-full h-full border-0"
+                    allow="fullscreen; gamepad; microphone; camera"
+                    onLoad={handleGameLoad}
+                    title={game.title}
+                  />
+                </>
+              )}
             </div>
 
             {/* Controls Footer */}
             {game.controls && (
-              <div 
+              <motion.div 
+                initial={{ opacity: 1 }}
+                animate={{ 
+                  opacity: showControls ? 1 : 0,
+                  y: showControls ? 0 : 20
+                }}
+                transition={{ duration: 0.3 }}
                 className={cn(
-                  "p-4 bg-gradient-to-r from-background to-secondary/20 border-t border-white/10 transition-all duration-300",
-                  !showControls && isFullscreen && "opacity-0 pointer-events-none"
+                  "p-4 bg-gradient-to-r from-background to-secondary/20 border-t border-white/10",
+                  !showControls && isFullscreen && "pointer-events-none"
                 )}
                 onMouseEnter={() => setShowControls(true)}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <h4 className="font-semibold text-sm mb-1">Controls:</h4>
-                    <p className="text-xs text-muted-foreground">{game.controls.instructions}</p>
+                    <p className="text-xs text-muted-foreground">
+                      WASD to move, Mouse to aim, Space/Enter/Left Click to shoot, ESC for pause menu
+                    </p>
                   </div>
                   
                   <div className="flex items-center gap-2 text-xs">
-                    {game.controls.keyboard && (
-                      <div className="flex items-center gap-1 px-2 py-1 bg-white/10 rounded">
-                        <span>⌨️</span>
-                        <span>Keyboard</span>
-                      </div>
-                    )}
-                    {game.controls.mouse && (
-                      <div className="flex items-center gap-1 px-2 py-1 bg-white/10 rounded">
-                        <span>🖱️</span>
-                        <span>Mouse</span>
-                      </div>
-                    )}
-                    {game.controls.gamepad && (
-                      <div className="flex items-center gap-1 px-2 py-1 bg-white/10 rounded">
-                        <span>🎮</span>
-                        <span>Gamepad</span>
-                      </div>
-                    )}
+                    <div className="flex items-center gap-1 px-2 py-1 bg-white/10 rounded">
+                      <span>⌨️</span>
+                      <span>Keyboard</span>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-1 bg-white/10 rounded">
+                      <span>🖱️</span>
+                      <span>Mouse</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
           </Card>
         </motion.div>
       </motion.div>
     </AnimatePresence>
   )
+
+  return createPortal(modalContent, document.body)
 } 

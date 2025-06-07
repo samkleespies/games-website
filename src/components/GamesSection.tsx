@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { motion } from 'framer-motion'
-import { Filter, Grid, List, Search } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Filter, Grid, List, Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import GameCard from '@/components/GameCard'
 import { games } from '@/data/games'
@@ -39,6 +39,7 @@ export default function GamesSection() {
   const [selectedEngine, setSelectedEngine] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [showOnlyPlayable, setShowOnlyPlayable] = useState(false)
+  const [showFilters, setShowFilters] = useState(false)
 
   const filteredGames = useMemo(() => {
     return games.filter(game => {
@@ -66,6 +67,9 @@ export default function GamesSection() {
       return true
     })
   }, [selectedGenre, selectedEngine, searchQuery, showOnlyPlayable])
+
+  // Check if any filters are active
+  const hasActiveFilters = selectedGenre !== 'All' || selectedEngine !== 'All' || showOnlyPlayable
 
   return (
     <section id="games" className="py-20 px-4 sm:px-6 lg:px-8">
@@ -103,7 +107,7 @@ export default function GamesSection() {
           </div>
         </motion.div>
 
-        {/* Filters */}
+        {/* Search and Filter Controls */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -112,7 +116,7 @@ export default function GamesSection() {
           className="mb-12"
         >
           <div className="glass-effect rounded-2xl p-6 mb-8">
-            {/* Search */}
+            {/* Search Bar with Filter Button */}
             <div className="relative mb-6">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
@@ -120,64 +124,111 @@ export default function GamesSection() {
                 placeholder="Search games..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-background/50 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                className="w-full pl-10 pr-20 py-3 bg-background/50 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
               />
-            </div>
-
-            <div className="flex flex-col lg:flex-row gap-6">
-              {/* Genre Filter */}
-              <div className="flex-1">
-                <label className="block text-sm font-medium mb-3 text-muted-foreground">
-                  <Filter className="inline h-4 w-4 mr-2" />
-                  Genre
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {genres.map((genre) => (
-                    <Button
-                      key={genre}
-                      onClick={() => setSelectedGenre(genre)}
-                      variant={selectedGenre === genre ? "gradient" : "outline"}
-                      size="sm"
-                      className="transition-all duration-300"
-                    >
-                      {genre}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Engine Filter */}
-              <div className="flex-1">
-                <label className="block text-sm font-medium mb-3 text-muted-foreground">
-                  Engine
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {engines.map((engine) => (
-                    <Button
-                      key={engine}
-                      onClick={() => setSelectedEngine(engine)}
-                      variant={selectedEngine === engine ? "gradient" : "outline"}
-                      size="sm"
-                      className="transition-all duration-300"
-                    >
-                      {engine}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Options */}
-              <div className="flex flex-col gap-3">
+              
+              {/* Filter Button inside search bar */}
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
+                {hasActiveFilters && (
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                )}
                 <Button
-                  onClick={() => setShowOnlyPlayable(!showOnlyPlayable)}
-                  variant={showOnlyPlayable ? "gradient" : "outline"}
+                  onClick={() => setShowFilters(!showFilters)}
+                  variant={showFilters ? "gradient" : "ghost"}
                   size="sm"
-                  className="whitespace-nowrap"
+                  className="h-8 px-3"
                 >
-                  {showOnlyPlayable ? '✓ Playable Only' : 'Show Playable Only'}
+                  <Filter className="h-4 w-4" />
                 </Button>
               </div>
             </div>
+
+            {/* Collapsible Filters */}
+            <AnimatePresence>
+              {showFilters && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="border-t border-white/10 pt-6">
+                    <div className="flex flex-col lg:flex-row gap-6">
+                      {/* Genre Filter */}
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium mb-3 text-muted-foreground">
+                          <Filter className="inline h-4 w-4 mr-2" />
+                          Genre
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          {genres.map((genre) => (
+                            <Button
+                              key={genre}
+                              onClick={() => setSelectedGenre(genre)}
+                              variant={selectedGenre === genre ? "gradient" : "outline"}
+                              size="sm"
+                              className="transition-all duration-300"
+                            >
+                              {genre}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Engine Filter */}
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium mb-3 text-muted-foreground">
+                          Engine
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          {engines.map((engine) => (
+                            <Button
+                              key={engine}
+                              onClick={() => setSelectedEngine(engine)}
+                              variant={selectedEngine === engine ? "gradient" : "outline"}
+                              size="sm"
+                              className="transition-all duration-300"
+                            >
+                              {engine}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Options */}
+                      <div className="flex flex-col gap-3">
+                        <Button
+                          onClick={() => setShowOnlyPlayable(!showOnlyPlayable)}
+                          variant={showOnlyPlayable ? "gradient" : "outline"}
+                          size="sm"
+                          className="whitespace-nowrap"
+                        >
+                          {showOnlyPlayable ? '✓ Playable Only' : 'Show Playable Only'}
+                        </Button>
+                        
+                        {/* Clear Filters Button */}
+                        {hasActiveFilters && (
+                          <Button
+                            onClick={() => {
+                              setSelectedGenre('All')
+                              setSelectedEngine('All')
+                              setShowOnlyPlayable(false)
+                            }}
+                            variant="outline"
+                            size="sm"
+                            className="whitespace-nowrap text-red-400 border-red-400/30 hover:bg-red-400/10"
+                          >
+                            <X className="h-3 w-3 mr-1" />
+                            Clear
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Results count */}

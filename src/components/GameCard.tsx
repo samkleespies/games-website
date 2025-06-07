@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { Play, Github, ExternalLink, Calendar, Tag, Monitor } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -17,6 +18,7 @@ interface GameCardProps {
 export default function GameCard({ game, index }: GameCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
   const [isGamePlayerOpen, setIsGamePlayerOpen] = useState(false)
 
   const cardVariants = {
@@ -39,7 +41,12 @@ export default function GameCard({ game, index }: GameCardProps) {
 
   const handlePlayGame = () => {
     if (game.playable) {
-      setIsGamePlayerOpen(true)
+      if (game.requirements?.webgl === false) {
+        // Download game instead of opening player
+        window.open(`/api/games/${game.id}/download`, '_blank')
+      } else {
+        setIsGamePlayerOpen(true)
+      }
     }
   }
 
@@ -58,14 +65,30 @@ export default function GameCard({ game, index }: GameCardProps) {
       <Card className="overflow-hidden h-full bg-gradient-to-br from-background/50 to-background/30 hover:from-background/60 hover:to-background/40 transition-all duration-500">
         {/* Game Thumbnail */}
         <div className="relative overflow-hidden aspect-video">
-          <motion.img
+          <Image
             src={game.thumbnail}
             alt={game.title}
-            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-            onLoad={() => setImageLoaded(true)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: imageLoaded ? 1 : 0 }}
+            fill
+            className="object-cover transition-all duration-700 group-hover:scale-110"
+            onLoad={() => {
+              console.log('Image loaded:', game.thumbnail)
+              setImageLoaded(true)
+            }}
+            onError={(e) => {
+              console.error('Image failed to load:', game.thumbnail, e)
+              setImageError(true)
+            }}
           />
+          
+          {/* Error Fallback */}
+          {imageError && (
+            <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+              <div className="text-center text-white/60">
+                <div className="text-4xl mb-2">🎮</div>
+                <div className="text-sm">Thumbnail unavailable</div>
+              </div>
+            </div>
+          )}
           
           {/* Overlay */}
           <motion.div
@@ -171,8 +194,14 @@ export default function GameCard({ game, index }: GameCardProps) {
               className="flex-1"
               disabled={!game.playable}
             >
-              <Play className="h-4 w-4 mr-2" />
-              {game.playable ? 'Play' : 'Soon'}
+              {game.requirements?.webgl === false ? (
+                <>📥 Download</>
+              ) : (
+                <>
+                  <Play className="h-4 w-4 mr-2" />
+                  {game.playable ? 'Play' : 'Soon'}
+                </>
+              )}
             </Button>
             
             {game.sourceCodeUrl && (
