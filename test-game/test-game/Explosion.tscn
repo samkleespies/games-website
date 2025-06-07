@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Explosion.gd" id="1_explosion"]
+
+[sub_resource type="Gradient" id="Gradient_1e4k9"]
+colors = PackedColorArray(1, 0.5, 0, 1, 1, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1t8p3"]
+gradient = SubResource("Gradient_1e4k9")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1y6k2"]
+direction = Vector3(0, -1, 0)
+spread = 360.0
+initial_velocity_min = 100.0
+initial_velocity_max = 300.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 2.0
+
+[node name="Explosion" type="GPUParticles2D"]
+script = ExtResource("1_explosion")
+emitting = false
+amount = 50
+lifetime = 1.0
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_1y6k2")
+texture = SubResource("GradientTexture2D_1t8p3")
