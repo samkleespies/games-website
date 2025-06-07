@@ -28,6 +28,7 @@ next-env.d.ts
 # IDE & Editor files
 .vscode/
 .idea/
+docs/
 *.swp
 *.swo
 *~
@@ -48,6 +49,28 @@ logs
 # Runtime data
 pids
 *.pid
+
+# Godot specific files
+.godot/
+.import/
+export.cfg
+export_presets.cfg
+
+# Game source code (keep only exported builds in public/)
+space-asteroids/
+
+# Ignore game build files except in public directory
+*.pck
+*.exe
+*.x86_64
+*.apk
+
+# But include exported games in public directory
+!public/games/**
+
+# Temporary files
+*.tmp
+*.temp
 *.seed
 *.pid.lock
 

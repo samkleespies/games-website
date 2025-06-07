@@ -16,28 +16,14 @@ export const games: Game[] = [
     gameUrl: '/games/space-asteroids/index.html',
     genre: ['Arcade', 'Action', 'Shooter'],
     engine: 'Godot 4',
-    status: 'Released',
-    releaseDate: '2024',
-    playTime: '15-30 minutes',
-    difficulty: 'Medium',
+    releaseDate: new Date('2024-01-01'),
     playable: true,
     featured: true,
     technologies: ['Godot 4.4', 'GDScript', 'GPU Particles', 'WebGL'],
-    tags: ['Arcade', 'Space', 'Shooter', 'Classic', 'Physics'],
-    features: [
-      'Classic asteroids gameplay with modern physics',
-      'Mouse aiming system',
-      'Progressive difficulty scaling',
-      'Screen wrapping mechanics',
-      'Particle effects and smooth animations',
-      'Comprehensive pause menu with options',
-      'Score tracking and high score system'
-    ],
     requirements: {
       webgl: true,
-      resolution: '1024x768',
-      input: ['Mouse', 'Keyboard'],
-      browsers: ['Chrome', 'Firefox', 'Safari', 'Edge']
+      minResolution: '1024x768',
+      browser: ['Chrome', 'Firefox', 'Safari', 'Edge']
     },
     controls: {
       instructions: 'WASD to move, Mouse to aim, Space/Enter/Left Click to shoot, ESC for pause menu',
@@ -48,16 +34,8 @@ export const games: Game[] = [
     stats: {
       plays: 1250,
       rating: 4.7,
-      downloads: 89
+      reviews: 89
     },
-    downloadUrl: '/downloads/space-asteroids.zip',
-    sourceCodeUrl: 'https://github.com/yourusername/space-asteroids',
-    techSpecs: {
-      framework: 'Godot 4.4',
-      language: 'GDScript',
-      renderer: 'Vulkan/OpenGL ES',
-      audio: 'Godot Audio System',
-      fileSize: '50.2 MB'
-    }
+    sourceCodeUrl: 'https://github.com/yourusername/space-asteroids'
   },
 ]

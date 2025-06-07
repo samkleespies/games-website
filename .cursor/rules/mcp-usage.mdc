@@ -3,4 +3,9 @@ description:
 globs: 
 alwaysApply: true
 ---
-Always use the desktop-commander mcp tools to run commands
+Always use the desktop-commander mcp tools to run commands.
+Always use the playwright mcp tools to run site dev servers and interact with sites.
+Always use the godot-mcp tools to run godot game operations.
+Always use the context7 mcp tools to fetch up-to-date documentation.
+
+Always use the exa mcp tools to search the internet for answers if unsure about something.
