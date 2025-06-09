@@ -57,7 +57,8 @@ export.cfg
 export_presets.cfg
 
 # Game source code (keep only exported builds in public/)
-space-asteroids/
+# Ignore space-asteroids source directory in root, but not in public/games
+/space-asteroids/
 
 # Ignore game build files except in public directory
 *.pck
@@ -123,6 +124,5 @@ coverage/
 tmp/
 temp/
 
-# Game builds (add your game export folders here)
-/public/games/*/
+# Game builds - include exported games in public/games/
 !/public/games/.gitkeep 
