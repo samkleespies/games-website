@@ -5,12 +5,12 @@ import { ArrowDown, Play, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 const fadeInUp = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     y: 30
   },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: {
       duration: 0.8,
@@ -33,9 +33,87 @@ const staggerContainer = {
 export default function Hero() {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Clean Background with Subtle Grid */}
+      {/* Enhanced 3D Background */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background via-background to-background/95">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px]" />
+        {/* Animated Grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] animate-pulse" />
+
+        {/* Floating Particles */}
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-neon-cyan rounded-full opacity-60"
+            style={{
+              left: `${(i * 17 + 13) % 100}%`,
+              top: `${(i * 23 + 7) % 100}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.3, 1, 0.3],
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: 3 + (i % 3),
+              repeat: Infinity,
+              delay: i * 0.2,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+
+        {/* 3D Floating Cubes */}
+        <div className="absolute inset-0 perspective-1000">
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-8 h-8 border border-neon-cyan/30 bg-neon-cyan/5"
+              style={{
+                left: `${20 + i * 15}%`,
+                top: `${20 + (i % 2) * 40}%`,
+                transformStyle: 'preserve-3d',
+              }}
+              animate={{
+                rotateX: [0, 360],
+                rotateY: [0, 360],
+                y: [0, -20, 0],
+              }}
+              transition={{
+                duration: 8 + i * 2,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+          ))}
+        </div>
+
+
+
+        {/* Holographic Panels */}
+        <motion.div
+          className="absolute top-20 left-10 w-32 h-20 border border-neon-cyan/20 bg-neon-cyan/5 backdrop-blur-sm"
+          animate={{
+            opacity: [0.3, 0.8, 0.3],
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-32 right-16 w-24 h-16 border border-neon-pink/20 bg-neon-pink/5 backdrop-blur-sm"
+          animate={{
+            opacity: [0.2, 0.6, 0.2],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            delay: 1,
+            ease: "easeInOut",
+          }}
+        />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -59,18 +137,18 @@ export default function Hero() {
               <span className="block text-foreground">Gamedev</span>
               <span className="block text-neon-cyan">Portfolio</span>
             </h1>
-            
+
             <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-body">
-              Interactive experiences built with passion. 
+              A collection of some of my games.
               <br />
-              <span className="text-foreground">Play my games directly in your browser.</span>
+              <span className="text-foreground">Play directly in browser.</span>
             </p>
           </motion.div>
 
           {/* Clean CTA Buttons */}
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <Button 
-              asChild 
+            <Button
+              asChild
               className="bg-neon-cyan text-black hover:bg-neon-cyan/90 px-8 py-3 text-lg font-body font-medium"
             >
               <a href="#games" className="flex items-center gap-2">
@@ -78,10 +156,10 @@ export default function Hero() {
                 <span>Play Games</span>
               </a>
             </Button>
-            
-            <Button 
-              variant="outline" 
-              asChild 
+
+            <Button
+              variant="outline"
+              asChild
               className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10 px-8 py-3 text-lg font-body"
             >
               <a href="#about" className="flex items-center gap-2">
@@ -89,27 +167,6 @@ export default function Hero() {
                 <ArrowDown className="h-4 w-4" />
               </a>
             </Button>
-          </motion.div>
-
-          {/* Simple Stats */}
-          <motion.div variants={fadeInUp} className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
-            {[
-              { label: 'Games Created', value: '12+' },
-              { label: 'Technologies', value: '8+' },
-              { label: 'Play Time', value: '50h+' },
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                className="text-center group"
-                whileHover={{ scale: 1.02, y: -2 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className="text-3xl font-display font-bold text-neon-cyan mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-muted-foreground font-body">{stat.label}</div>
-              </motion.div>
-            ))}
           </motion.div>
         </motion.div>
       </div>

@@ -120,14 +120,7 @@ export default function GameCard({ game, index }: GameCardProps) {
             </Button>
           </motion.div>
 
-          {/* Featured Badge */}
-          {game.featured && (
-            <div className="absolute top-3 left-3">
-              <div className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full">
-                ⭐ Featured
-              </div>
-            </div>
-          )}
+
 
           {/* Engine Badge */}
           <div className="absolute top-3 right-3">
@@ -175,15 +168,7 @@ export default function GameCard({ game, index }: GameCardProps) {
             {game.genre.length > 2 && ', ...'}
           </div>
 
-          {/* Stats */}
-          {game.stats && (
-            <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-              <div className="flex items-center gap-4">
-                <span>▶️ {game.stats.plays.toLocaleString()} plays</span>
-                <span>⭐ {game.stats.rating.toFixed(1)}/5</span>
-              </div>
-            </div>
-          )}
+
 
           {/* Action Buttons */}
           <div className="flex gap-2">

@@ -19,8 +19,8 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'GameDev Portfolio | Interactive Games & Experiences',
-  description: 'Explore my collection of interactive games built with Godot 4 and other cutting-edge technologies. Play games directly in your browser and discover the creative process behind each project.',
+  title: 'GameDev Portfolio',
+  description: 'Explore a collection of my games. Play them directly in-browser.',
   keywords: ['game development', 'Godot 4', 'indie games', 'web games', 'interactive portfolio', 'browser games'],
   authors: [{ name: 'Game Developer' }],
   creator: 'Game Developer',
@@ -35,8 +35,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://your-domain.com',
-    title: 'GameDev Portfolio | Interactive Games & Experiences',
-    description: 'Explore my collection of interactive games built with Godot 4 and other cutting-edge technologies.',
+    title: 'GameDev Portfolio',
+    description: 'Explore a collection of my games. Play them directly in-browser.',
     siteName: 'GameDev Portfolio',
     images: [
       {
@@ -49,8 +49,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'GameDev Portfolio | Interactive Games & Experiences',
-    description: 'Explore my collection of interactive games built with Godot 4 and other cutting-edge technologies.',
+    title: 'GameDev Portfolio',
+    description: 'Explore a collection of my games. Play them directly in-browser.',
     images: ['/og-image.jpg'],
   },
   robots: {

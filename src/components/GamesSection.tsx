@@ -263,25 +263,7 @@ export default function GamesSection() {
           </motion.div>
         )}
 
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mt-20"
-        >
-          <div className="glass-effect rounded-2xl p-8 max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold mb-4">Want to Collaborate?</h3>
-            <p className="text-muted-foreground mb-6">
-              I&apos;m always interested in new projects and collaborations.
-              Let&apos;s create something amazing together!
-            </p>
-            <Button variant="gradient" size="lg" asChild>
-              <a href="#contact">Get In Touch</a>
-            </Button>
-          </div>
-        </motion.div>
+
       </div>
     </section>
   )

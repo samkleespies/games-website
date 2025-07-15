@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Cpu, Github, Mail, Zap } from 'lucide-react'
+import { Menu, X, Cpu, Github, Mail, Zap, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -16,6 +16,7 @@ const navigation = [
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isContactDropdownOpen, setIsContactDropdownOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,7 +79,7 @@ export default function Header() {
           {/* Cyberpunk CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <motion.a
-              href="https://github.com"
+              href="https://github.com/samkleespies"
               target="_blank"
               rel="noopener noreferrer"
               className="border border-neon-cyan/50 bg-transparent text-neon-cyan px-3 py-2 font-display text-xs tracking-wider hover:bg-neon-cyan/10 hover:border-neon-cyan transition-all duration-300 flex items-center gap-2"
@@ -88,16 +89,64 @@ export default function Header() {
               <Github className="h-3 w-3" />
               <span>GITHUB</span>
             </motion.a>
-            <motion.a
-              href="#contact"
-              className="bg-neon-pink/20 border border-neon-pink text-neon-pink px-3 py-2 font-display text-xs tracking-wider hover:bg-neon-pink/30 transition-all duration-300 flex items-center gap-2 relative overflow-hidden group"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <div className="absolute inset-0 bg-neon-pink/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
-              <Zap className="h-3 w-3 relative z-10" />
-              <span className="relative z-10">CONTACT</span>
-            </motion.a>
+            
+            {/* Contact Dropdown */}
+            <div className="relative">
+              <motion.button
+                onClick={() => setIsContactDropdownOpen(!isContactDropdownOpen)}
+                className="bg-neon-pink/20 border border-neon-pink text-neon-pink px-3 py-2 font-display text-xs tracking-wider hover:bg-neon-pink/30 transition-all duration-300 flex items-center gap-2 relative overflow-hidden group"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="absolute inset-0 bg-neon-pink/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
+                <Zap className="h-3 w-3 relative z-10" />
+                <span className="relative z-10">CONTACT</span>
+                <ChevronDown className={`h-3 w-3 relative z-10 transition-transform duration-200 ${isContactDropdownOpen ? 'rotate-180' : ''}`} />
+              </motion.button>
+
+              {/* Contact Dropdown Menu */}
+              <AnimatePresence>
+                {isContactDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 top-full mt-2 w-64 bg-black/95 backdrop-blur-md border border-neon-cyan/30 rounded shadow-lg shadow-neon-cyan/20"
+                  >
+                    <div className="p-4 space-y-3">
+                      <div className="text-neon-cyan font-display text-sm tracking-wider mb-3 border-b border-neon-cyan/20 pb-2">
+                        CONTACT INFO
+                      </div>
+                      
+                      <a
+                        href="mailto:sam.kleespies@gmail.com"
+                        className="flex items-center gap-3 text-foreground hover:text-neon-cyan transition-colors duration-300 p-2 rounded hover:bg-neon-cyan/10"
+                      >
+                        <Mail className="h-4 w-4" />
+                        <div>
+                          <div className="font-display text-xs tracking-wider">EMAIL</div>
+                          <div className="text-sm">sam.kleespies@gmail.com</div>
+                        </div>
+                      </a>
+                      
+                      <a
+                        href="https://github.com/samkleespies"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 text-foreground hover:text-neon-cyan transition-colors duration-300 p-2 rounded hover:bg-neon-cyan/10"
+                      >
+                        <Github className="h-4 w-4" />
+                        <div>
+                          <div className="font-display text-xs tracking-wider">GITHUB</div>
+                          <div className="text-sm">github.com/samkleespies</div>
+                        </div>
+                      </a>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           {/* Mobile menu button */}
