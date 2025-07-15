@@ -24,8 +24,8 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: {
       duration: 0.6,
@@ -47,23 +47,23 @@ export default function GamesSection() {
       if (selectedGenre !== 'All' && !game.genre.includes(selectedGenre)) {
         return false
       }
-      
+
       // Engine filter
       if (selectedEngine !== 'All' && game.engine !== selectedEngine) {
         return false
       }
-      
+
       // Playable filter
       if (showOnlyPlayable && !game.playable) {
         return false
       }
-      
+
       // Search filter
       if (searchQuery && !game.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-          !game.description.toLowerCase().includes(searchQuery.toLowerCase())) {
+        !game.description.toLowerCase().includes(searchQuery.toLowerCase())) {
         return false
       }
-      
+
       return true
     })
   }, [selectedGenre, selectedEngine, searchQuery, showOnlyPlayable])
@@ -72,7 +72,7 @@ export default function GamesSection() {
   const hasActiveFilters = selectedGenre !== 'All' || selectedEngine !== 'All' || showOnlyPlayable
 
   return (
-    <section id="games" className="py-20 px-4 sm:px-6 lg:px-8">
+    <section id="games" className="pt-20 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
@@ -80,7 +80,7 @@ export default function GamesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
           <h2 className="text-4xl sm:text-5xl font-bold mb-6">
             <span className="text-gradient">My Games</span>
@@ -89,22 +89,8 @@ export default function GamesSection() {
             Explore my collection of interactive experiences. Each game is playable directly in your browser
             and represents a unique challenge I&apos;ve tackled in game development.
           </p>
-          
-          {/* Stats */}
-          <div className="flex justify-center items-center gap-8 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <span>{games.filter(g => g.playable).length} Playable</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-              <span>{games.filter(g => !g.playable).length} Coming Soon</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-              <span>{games.filter(g => g.featured).length} Featured</span>
-            </div>
-          </div>
+
+
         </motion.div>
 
         {/* Search and Filter Controls */}
@@ -113,9 +99,9 @@ export default function GamesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-12"
+          className="mb-6"
         >
-          <div className="glass-effect rounded-2xl p-6 mb-8">
+          <div className="glass-effect rounded-2xl p-4 mb-4">
             {/* Search Bar with Filter Button */}
             <div className="relative mb-6">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -126,7 +112,7 @@ export default function GamesSection() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-20 py-3 bg-background/50 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
               />
-              
+
               {/* Filter Button inside search bar */}
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
                 {hasActiveFilters && (
@@ -206,7 +192,7 @@ export default function GamesSection() {
                         >
                           {showOnlyPlayable ? '✓ Playable Only' : 'Show Playable Only'}
                         </Button>
-                        
+
                         {/* Clear Filters Button */}
                         {hasActiveFilters && (
                           <Button
@@ -231,10 +217,7 @@ export default function GamesSection() {
             </AnimatePresence>
           </div>
 
-          {/* Results count */}
-          <div className="text-center text-muted-foreground">
-            Showing {filteredGames.length} of {games.length} games
-          </div>
+
         </motion.div>
 
         {/* Games Grid */}
@@ -291,7 +274,7 @@ export default function GamesSection() {
           <div className="glass-effect rounded-2xl p-8 max-w-2xl mx-auto">
             <h3 className="text-2xl font-bold mb-4">Want to Collaborate?</h3>
             <p className="text-muted-foreground mb-6">
-              I&apos;m always interested in new projects and collaborations. 
+              I&apos;m always interested in new projects and collaborations.
               Let&apos;s create something amazing together!
             </p>
             <Button variant="gradient" size="lg" asChild>

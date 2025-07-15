@@ -29,10 +29,19 @@ const config: Config = {
         },
         border: 'hsl(var(--border))',
         ring: 'hsl(var(--ring))',
+        neon: {
+          cyan: '#00ffff',
+          pink: '#ff00ff',
+          yellow: '#ffff00',
+          green: '#00ff00',
+          orange: '#ff8000',
+        },
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        mono: ['var(--font-mono)', 'Menlo', 'Monaco', 'monospace'],
+        display: ['var(--font-display)', 'Orbitron', 'monospace'],
+        body: ['var(--font-body)', 'Rajdhani', 'sans-serif'],
+        sans: ['var(--font-body)', 'Rajdhani', 'sans-serif'],
+        mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace'],
       },
       animation: {
         'fade-up': 'fade-up 0.6s ease-out',
@@ -41,6 +50,10 @@ const config: Config = {
         'float': 'float 6s ease-in-out infinite',
         'glow': 'glow 2s ease-in-out infinite alternate',
         'shimmer': 'shimmer 2s linear infinite',
+        'glitch': 'glitch-1 0.5s infinite',
+        'data-flow': 'data-flow 3s linear infinite',
+        'neon-flicker': 'neon-flicker 2s ease-in-out infinite',
+        'pulse-neon': 'pulse-neon 2s ease-in-out infinite alternate',
       },
       keyframes: {
         'fade-up': {
@@ -87,6 +100,29 @@ const config: Config = {
           },
           '100%': {
             backgroundPosition: '200% 0',
+          },
+        },
+        'glitch-1': {
+          '0%, 100%': { transform: 'translate(0)' },
+          '20%': { transform: 'translate(-2px, 2px)' },
+          '40%': { transform: 'translate(-2px, -2px)' },
+          '60%': { transform: 'translate(2px, 2px)' },
+          '80%': { transform: 'translate(2px, -2px)' },
+        },
+        'data-flow': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+        'neon-flicker': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.8' },
+        },
+        'pulse-neon': {
+          '0%': { 
+            boxShadow: '0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor',
+          },
+          '100%': { 
+            boxShadow: '0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor',
           },
         },
       },

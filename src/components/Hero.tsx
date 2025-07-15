@@ -1,16 +1,22 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowDown, Play, Github, ExternalLink } from 'lucide-react'
+import { ArrowDown, Play, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-const floatingAnimation = {
-  y: [-20, -30, -20],
-  transition: {
-    duration: 4,
-    repeat: Infinity,
-    ease: "easeInOut"
-  }
+const fadeInUp = {
+  hidden: { 
+    opacity: 0, 
+    y: 30
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: "easeOut",
+    },
+  },
 }
 
 const staggerContainer = {
@@ -24,92 +30,68 @@ const staggerContainer = {
   },
 }
 
-const fadeInUp = {
-  hidden: { 
-    opacity: 0, 
-    y: 60,
-    scale: 0.95
-  },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.8,
-      ease: [0.25, 0.25, 0.25, 0.75],
-    },
-  },
-}
-
 export default function Hero() {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 -z-10">
-        {/* Gradient Orbs */}
-        <motion.div 
-          className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl"
-          animate={floatingAnimation}
-        />
-        <motion.div 
-          className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
-          animate={{ ...floatingAnimation, transition: { ...floatingAnimation.transition, delay: 1 } }}
-        />
-        <motion.div 
-          className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-pink-500/20 rounded-full blur-3xl"
-          animate={{ ...floatingAnimation, transition: { ...floatingAnimation.transition, delay: 2 } }}
-        />
-        
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
+      {/* Clean Background with Subtle Grid */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background via-background to-background/95">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px]" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
           className="text-center"
         >
+          {/* Developer Badge */}
+          <motion.div variants={fadeInUp} className="mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-neon-cyan/10 border border-neon-cyan/20 rounded-full mb-6">
+              <User className="h-4 w-4 text-neon-cyan" />
+              <span className="text-sm font-body text-neon-cyan">Sam Kleespies</span>
+            </div>
+          </motion.div>
+
           {/* Main Heading */}
           <motion.div variants={fadeInUp} className="mb-8">
-            <motion.div 
-              className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-white/10 backdrop-blur-sm mb-6"
-              whileHover={{ scale: 1.05 }}
-            >
-              <span className="text-sm font-medium text-gradient">🎮 Game Developer Portfolio</span>
-            </motion.div>
-            
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
-              <span className="block text-gradient-primary">Crafting Digital</span>
-              <span className="block text-gradient">Experiences</span>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold tracking-tight mb-6">
+              <span className="block text-foreground">Gamedev</span>
+              <span className="block text-neon-cyan">Portfolio</span>
             </h1>
             
-            <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Welcome to my interactive portfolio where you can{' '}
-              <span className="text-foreground font-semibold">play my games</span>{' '}
-              directly in your browser and explore the creative process behind each project.
+            <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-body">
+              Interactive experiences built with passion. 
+              <br />
+              <span className="text-foreground">Play my games directly in your browser.</span>
             </p>
           </motion.div>
 
-          {/* CTA Buttons */}
-          <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button variant="gradient" size="xl" asChild className="group">
-              <a href="#games">
-                <Play className="h-5 w-5 group-hover:scale-110 transition-transform" />
+          {/* Clean CTA Buttons */}
+          <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+            <Button 
+              asChild 
+              className="bg-neon-cyan text-black hover:bg-neon-cyan/90 px-8 py-3 text-lg font-body font-medium"
+            >
+              <a href="#games" className="flex items-center gap-2">
+                <Play className="h-5 w-5" />
                 <span>Play Games</span>
               </a>
             </Button>
             
-            <Button variant="glass" size="xl" asChild className="group">
-              <a href="#about">
+            <Button 
+              variant="outline" 
+              asChild 
+              className="border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10 px-8 py-3 text-lg font-body"
+            >
+              <a href="#about" className="flex items-center gap-2">
                 <span>Learn More</span>
-                <ArrowDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
+                <ArrowDown className="h-4 w-4" />
               </a>
             </Button>
           </motion.div>
 
-          {/* Featured Stats */}
+          {/* Simple Stats */}
           <motion.div variants={fadeInUp} className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
             {[
               { label: 'Games Created', value: '12+' },
@@ -119,35 +101,36 @@ export default function Hero() {
               <motion.div
                 key={stat.label}
                 className="text-center group"
-                whileHover={{ scale: 1.05, y: -2 }}
+                whileHover={{ scale: 1.02, y: -2 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <div className="text-3xl font-bold text-gradient mb-2 group-hover:animate-pulse">
+                <div className="text-3xl font-display font-bold text-neon-cyan mb-2">
                   {stat.value}
                 </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
+                <div className="text-sm text-muted-foreground font-body">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
+      {/* Simple Scroll Indicator */}
+      <div className="absolute bottom-8 left-0 right-0 flex justify-center">
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="flex flex-col items-center text-muted-foreground"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
         >
-          <span className="text-sm mb-2">Scroll to explore</span>
-          <ArrowDown className="h-4 w-4" />
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="flex flex-col items-center text-muted-foreground"
+          >
+            <span className="text-sm mb-2 font-body">Scroll to explore</span>
+            <ArrowDown className="h-4 w-4" />
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   )
 } 

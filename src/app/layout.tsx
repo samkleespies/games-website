@@ -1,10 +1,16 @@
 import type { Metadata } from 'next'
-import { Inter, JetBrains_Mono } from 'next/font/google'
+import { Orbitron, Rajdhani, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({
+const orbitron = Orbitron({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-display',
+})
+
+const rajdhani = Rajdhani({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-body',
 })
 
 const jetbrainsMono = JetBrains_Mono({
@@ -69,8 +75,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="min-h-screen bg-background font-sans antialiased">
+    <html lang="en" className={`${orbitron.variable} ${rajdhani.variable} ${jetbrainsMono.variable}`}>
+      <body className="min-h-screen terminal-bg font-body antialiased text-foreground">
         {children}
       </body>
     </html>
