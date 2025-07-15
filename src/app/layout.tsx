@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Orbitron, Rajdhani, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 
 const orbitron = Orbitron({
@@ -80,6 +81,7 @@ export default function RootLayout({
       <body className="min-h-screen terminal-bg font-body antialiased text-foreground">
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
