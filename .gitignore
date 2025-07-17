@@ -127,3 +127,6 @@ temp/
 
 # Game builds - include exported games in public/games/
 !/public/games/.gitkeep 
+.vercel
+
+/generated/prisma
