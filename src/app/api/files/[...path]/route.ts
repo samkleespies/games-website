@@ -4,9 +4,10 @@ const GITHUB_RELEASE_BASE_URL = 'https://github.com/samkleespies/games-website/r
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  context: { params: Promise<{ path: string[] }> }
 ) {
   try {
+    const params = await context.params;
     const filePath = params.path.join('/');
     const githubUrl = `${GITHUB_RELEASE_BASE_URL}/${filePath}`;
     
