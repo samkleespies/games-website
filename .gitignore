@@ -60,6 +60,8 @@ export_presets.cfg
 # Game source code (keep only exported builds in public/)
 # Ignore space-asteroids source directory in root, but not in public/games
 /space-asteroids/
+/physics-sandbox/
+/zombies-kino-remake/
 
 # Ignore large game files (over 100MB) to avoid GitHub limits
 *.pck
