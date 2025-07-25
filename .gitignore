@@ -62,8 +62,8 @@ export_presets.cfg
 /space-asteroids/
 
 # Ignore large game files (over 100MB) to avoid GitHub limits
-*.pck
-*.wasm
+# *.pck
+# *.wasm
 
 # Temporary files
 *.tmp
