@@ -19,9 +19,9 @@ export async function OPTIONS() {
 
 export async function GET() {
   try {
-    // Get top 10 scores for space-asteroids
+    // Get top 10 scores for zombies-kino-remake
     const scores = await prisma.gameScore.findMany({
-      where: { gameId: 'space-asteroids' },
+      where: { gameId: 'zombies-kino-remake' },
       orderBy: { score: 'desc' },
       take: 10,
       select: {
@@ -37,7 +37,7 @@ export async function GET() {
         rank: index + 1
       })),
       totalCount: scores.length,
-      gameId: 'space-asteroids'
+      gameId: 'zombies-kino-remake'
     }
 
     return NextResponse.json(response, { headers: corsHeaders })
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
 
     const newScore = await prisma.gameScore.create({
       data: {
-        gameId: 'space-asteroids',
+        gameId: 'zombies-kino-remake',
         playerName,
         score: body.score
       }

@@ -5,13 +5,14 @@ import { ArrowLeft, Gamepad2, Trophy, Download, ExternalLink, Maximize2, Minimiz
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import Leaderboard from '@/components/Leaderboard'
+import GameIframe from '@/components/GameIframe'
 import { games } from '@/data/games'
 
-export default function SpaceAsteroidsPage() {
+export default function ZombiesKinoRemakePage() {
   const [gameLoaded, setGameLoaded] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const game = games.find(g => g.id === 'space-asteroids')
+  const game = games.find(g => g.id === 'zombies-kino-remake')
 
   // Handle fullscreen changes
   useEffect(() => {
@@ -56,19 +57,24 @@ export default function SpaceAsteroidsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
       {/* Header */}
-      <div className="border-b border-gray-800 bg-background/50 backdrop-blur-sm sticky top-0 z-10">
+      <div className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/">
                 <Button variant="ghost" size="sm">
                   <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
+                  Back to Games
                 </Button>
               </Link>
-              <div>
-                <h1 className="text-2xl font-bold text-green-400">{game.title}</h1>
-                <p className="text-sm text-gray-400">Built with {game.engine}</p>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center">
+                  <Gamepad2 className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-red-400">{game.title}</h1>
+                  <p className="text-sm text-gray-400">Built with {game.engine}</p>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -104,8 +110,8 @@ export default function SpaceAsteroidsPage() {
               <div className="p-4 border-b border-gray-700">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Gamepad2 className="h-5 w-5 text-green-400" />
-                    <span className="font-medium">Space Asteroids</span>
+                    <Gamepad2 className="h-5 w-5 text-red-400" />
+                    <span className="font-medium">Zombies: Kino Remake</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {!gameLoaded && (
@@ -125,26 +131,23 @@ export default function SpaceAsteroidsPage() {
               </div>
               
               <div className="relative aspect-video bg-black">
-                <iframe
+                <GameIframe
                   ref={iframeRef}
                   src={game.gameUrl}
-                  className="w-full h-full"
-                  onLoad={() => setGameLoaded(true)}
                   title={game.title}
-                  allow="fullscreen; gamepad; microphone; camera"
-                  allowFullScreen
+                  onLoad={() => setGameLoaded(true)}
                 />
                 {!gameLoaded && (
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
                     <div className="text-center">
-                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400 mx-auto mb-4"></div>
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-400 mx-auto mb-4"></div>
                       <p className="text-gray-400">Loading {game.title}...</p>
                     </div>
                   </div>
                 )}
               </div>
             </motion.div>
-
+            
             {/* Game Info */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -152,16 +155,19 @@ export default function SpaceAsteroidsPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-6 bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-6"
             >
-              <h2 className="text-xl font-bold mb-4">About the Game</h2>
-              <p className="text-gray-300 mb-4">{game.longDescription || game.description}</p>
+              <h2 className="text-xl font-bold text-red-400 mb-4">About the Game</h2>
+              <p className="text-gray-300 mb-6">{game.longDescription}</p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <h3 className="font-semibold text-green-400 mb-2">Controls</h3>
-                  <p className="text-sm text-gray-300">{game.controls?.instructions}</p>
+                  <h3 className="font-semibold text-red-400 mb-2">Controls</h3>
+                  <p className="text-sm text-gray-300 mb-2">{game.controls?.instructions}</p>
+                  <p className="text-xs text-yellow-400 bg-yellow-400/10 p-2 rounded border border-yellow-400/20">
+                    💡 <strong>Tip:</strong> Click inside the game area to enable mouse capture for first-person camera controls!
+                  </p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-green-400 mb-2">Technologies</h3>
+                  <h3 className="font-semibold text-red-400 mb-2">Technologies</h3>
                   <div className="flex flex-wrap gap-2">
                     {game.technologies.map((tech) => (
                       <span
@@ -179,13 +185,15 @@ export default function SpaceAsteroidsPage() {
 
           {/* Sidebar */}
           <div className="xl:col-span-1">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <Leaderboard gameId={game.id} className="sticky top-24" leaderboardEnabled={game.leaderboardEnabled} />
-            </motion.div>
+            {game.leaderboardEnabled && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                <Leaderboard gameId={game.id} />
+              </motion.div>
+            )}
           </div>
         </div>
       </div>

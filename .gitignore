@@ -61,14 +61,9 @@ export_presets.cfg
 # Ignore space-asteroids source directory in root, but not in public/games
 /space-asteroids/
 
-# Ignore game build files except in public directory
+# Ignore large game files (over 100MB) to avoid GitHub limits
 *.pck
-*.exe
-*.x86_64
-*.apk
-
-# But include exported games in public directory
-!public/games/**
+*.wasm
 
 # Temporary files
 *.tmp

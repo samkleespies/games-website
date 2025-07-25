@@ -17,6 +17,7 @@ export interface Game {
   requirements?: GameRequirements
   awards?: string[]
   stats?: GameStats
+  leaderboardEnabled?: boolean
 }
 
 export interface GameControls {
@@ -25,6 +26,7 @@ export interface GameControls {
   gamepad?: boolean
   touch?: boolean
   instructions: string
+  requiresMouseCapture?: boolean
 }
 
 export interface GameRequirements {

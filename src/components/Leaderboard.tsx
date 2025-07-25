@@ -8,9 +8,10 @@ import { LeaderboardResponse, LeaderboardEntry } from '@/types/score'
 interface LeaderboardProps {
   gameId: string
   className?: string
+  leaderboardEnabled?: boolean
 }
 
-export default function Leaderboard({ gameId, className = '' }: LeaderboardProps) {
+export default function Leaderboard({ gameId, className = '', leaderboardEnabled = true }: LeaderboardProps) {
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -36,8 +37,29 @@ export default function Leaderboard({ gameId, className = '' }: LeaderboardProps
   }
 
   useEffect(() => {
-    fetchScores()
-  }, [gameId])
+    if (leaderboardEnabled) {
+      fetchScores()
+    }
+  }, [gameId, leaderboardEnabled])
+
+  // Show disabled message if leaderboards are not enabled for this game
+  if (!leaderboardEnabled) {
+    return (
+      <div className={`bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-sm p-6 rounded-lg border border-gray-700 ${className}`}>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold text-gray-400 flex items-center gap-2">
+            <Trophy className="h-5 w-5" />
+            Leaderboard
+          </h3>
+        </div>
+        <div className="text-center py-8">
+          <Trophy className="h-12 w-12 text-gray-600 mx-auto mb-4" />
+          <p className="text-gray-400 mb-2">Leaderboard not available for this game</p>
+          <p className="text-sm text-gray-500">This is a sandbox experience - focus on creativity and experimentation!</p>
+        </div>
+      </div>
+    )
+  }
 
   const getRankIcon = (rank: number) => {
     switch (rank) {

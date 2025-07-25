@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom'
 import { X, Maximize2, Minimize2, RotateCcw, Volume2, VolumeX, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import GameIframe from '@/components/GameIframe'
 import { Game } from '@/types/game'
 import { cn } from '@/lib/utils'
 
@@ -252,14 +253,24 @@ export default function GamePlayer({ game, isOpen, onClose }: GamePlayerProps) {
                   )}
 
                   {/* Game iframe */}
-                  <iframe
-                    ref={iframeRef}
-                    src={game.gameUrl}
-                    className="w-full h-full border-0"
-                    allow="fullscreen; gamepad; microphone; camera"
-                    onLoad={handleGameLoad}
-                    title={game.title}
-                  />
+                  {game.controls?.requiresMouseCapture ? (
+                    <GameIframe
+                      ref={iframeRef}
+                      src={game.gameUrl}
+                      title={game.title}
+                      className="border-0"
+                      onLoad={handleGameLoad}
+                    />
+                  ) : (
+                    <iframe
+                      ref={iframeRef}
+                      src={game.gameUrl}
+                      className="w-full h-full border-0"
+                      allow="fullscreen; gamepad; microphone; camera"
+                      onLoad={handleGameLoad}
+                      title={game.title}
+                    />
+                  )}
                 </>
               )}
             </div>

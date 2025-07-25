@@ -5,13 +5,14 @@ import { ArrowLeft, Gamepad2, Trophy, Download, ExternalLink, Maximize2, Minimiz
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import Leaderboard from '@/components/Leaderboard'
+import GameIframe from '@/components/GameIframe'
 import { games } from '@/data/games'
 
-export default function SpaceAsteroidsPage() {
+export default function PhysicsSandboxPage() {
   const [gameLoaded, setGameLoaded] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const game = games.find(g => g.id === 'space-asteroids')
+  const game = games.find(g => g.id === 'physics-sandbox')
 
   // Handle fullscreen changes
   useEffect(() => {
@@ -36,6 +37,8 @@ export default function SpaceAsteroidsPage() {
       }
     }
   }
+
+
 
   if (!game) {
     return (
@@ -67,7 +70,7 @@ export default function SpaceAsteroidsPage() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-green-400">{game.title}</h1>
+                <h1 className="text-2xl font-bold text-blue-400">{game.title}</h1>
                 <p className="text-sm text-gray-400">Built with {game.engine}</p>
               </div>
             </div>
@@ -104,8 +107,8 @@ export default function SpaceAsteroidsPage() {
               <div className="p-4 border-b border-gray-700">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Gamepad2 className="h-5 w-5 text-green-400" />
-                    <span className="font-medium">Space Asteroids</span>
+                    <Gamepad2 className="h-5 w-5 text-blue-400" />
+                    <span className="font-medium">Physics Sandbox</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {!gameLoaded && (
@@ -125,19 +128,16 @@ export default function SpaceAsteroidsPage() {
               </div>
               
               <div className="relative aspect-video bg-black">
-                <iframe
+                <GameIframe
                   ref={iframeRef}
                   src={game.gameUrl}
-                  className="w-full h-full"
-                  onLoad={() => setGameLoaded(true)}
                   title={game.title}
-                  allow="fullscreen; gamepad; microphone; camera"
-                  allowFullScreen
+                  onLoad={() => setGameLoaded(true)}
                 />
                 {!gameLoaded && (
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
                     <div className="text-center">
-                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-400 mx-auto mb-4"></div>
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
                       <p className="text-gray-400">Loading {game.title}...</p>
                     </div>
                   </div>
@@ -157,11 +157,14 @@ export default function SpaceAsteroidsPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <h3 className="font-semibold text-green-400 mb-2">Controls</h3>
-                  <p className="text-sm text-gray-300">{game.controls?.instructions}</p>
+                  <h3 className="font-semibold text-blue-400 mb-2">Controls</h3>
+                  <p className="text-sm text-gray-300 mb-2">{game.controls?.instructions}</p>
+                  <p className="text-xs text-yellow-400 bg-yellow-400/10 p-2 rounded border border-yellow-400/20">
+                    💡 <strong>Tip:</strong> Click inside the game area to enable mouse capture for first-person camera controls!
+                  </p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-green-400 mb-2">Technologies</h3>
+                  <h3 className="font-semibold text-blue-400 mb-2">Technologies</h3>
                   <div className="flex flex-wrap gap-2">
                     {game.technologies.map((tech) => (
                       <span

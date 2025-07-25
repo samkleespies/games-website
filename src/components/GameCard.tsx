@@ -3,10 +3,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { Play, Github, ExternalLink, Calendar, Tag, Monitor } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import GamePlayer from '@/components/GamePlayer'
 import { Game } from '@/types/game'
 import { cn } from '@/lib/utils'
 
@@ -16,10 +16,10 @@ interface GameCardProps {
 }
 
 export default function GameCard({ game, index }: GameCardProps) {
+  const router = useRouter()
   const [isHovered, setIsHovered] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageError, setImageError] = useState(false)
-  const [isGamePlayerOpen, setIsGamePlayerOpen] = useState(false)
 
   const cardVariants = {
     hidden: { 
@@ -45,7 +45,8 @@ export default function GameCard({ game, index }: GameCardProps) {
         // Download game instead of opening player
         window.open(`/api/games/${game.id}/download`, '_blank')
       } else {
-        setIsGamePlayerOpen(true)
+        // Navigate to the dedicated game page
+        router.push(`/games/${game.id}`)
       }
     }
   }
@@ -207,13 +208,6 @@ export default function GameCard({ game, index }: GameCardProps) {
           </div>
         </CardContent>
       </Card>
-
-      {/* Game Player Modal */}
-      <GamePlayer
-        game={game}
-        isOpen={isGamePlayerOpen}
-        onClose={() => setIsGamePlayerOpen(false)}
-      />
     </motion.div>
   )
 } 
