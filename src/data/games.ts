@@ -1,12 +1,11 @@
 import { Game } from '@/types/game'
 
-// Real games data - featuring the actual Space Asteroids game
 export const games: Game[] = [
   {
     id: 'space-asteroids',
     title: 'Space Asteroids',
     description: 'Classic asteroids',
-    longDescription: 'Go for the high score! You may get something special...',
+    longDescription: 'Play my take on asteroids and submit your score to the leaderboard.',
     thumbnail: '/games/space-asteroids/thumbnail.png',
     screenshots: [
       '/games/space-asteroids/screenshot1.jpg',

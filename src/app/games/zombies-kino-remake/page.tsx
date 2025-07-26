@@ -185,15 +185,13 @@ export default function ZombiesKinoRemakePage() {
 
           {/* Sidebar */}
           <div className="xl:col-span-1">
-            {game.leaderboardEnabled && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                <Leaderboard gameId={game.id} />
-              </motion.div>
-            )}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <Leaderboard gameId={game.id} className="sticky top-24" leaderboardEnabled={game.leaderboardEnabled} />
+            </motion.div>
           </div>
         </div>
       </div>

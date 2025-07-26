@@ -127,21 +127,21 @@ export default function Hero() {
           <motion.div variants={fadeInUp} className="mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-neon-cyan/10 border border-neon-cyan/20 rounded-full mb-6">
               <User className="h-4 w-4 text-neon-cyan" />
-              <span className="text-sm font-body text-neon-cyan">Sam Kleespies</span>
+              <span className="text-sm font-body text-neon-cyan select-none">Sam Kleespies</span>
             </div>
           </motion.div>
 
           {/* Main Heading */}
           <motion.div variants={fadeInUp} className="mb-8">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold tracking-tight mb-6">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold tracking-tight mb-6 select-none">
               <span className="block text-foreground">Gamedev</span>
               <span className="block text-neon-cyan">Portfolio</span>
             </h1>
 
-            <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-body">
-              A collection of some of my games.
+            <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-body select-none">
+              A collection of some of my games
               <br />
-              <span className="text-foreground">Play directly in browser.</span>
+              <span className="text-foreground">Play directly in browser</span>
             </p>
           </motion.div>
 
@@ -183,7 +183,7 @@ export default function Hero() {
             transition={{ duration: 2, repeat: Infinity }}
             className="flex flex-col items-center text-muted-foreground"
           >
-            <span className="text-sm mb-2 font-body">Scroll to explore</span>
+            <span className="text-sm mb-2 font-body select-none">Scroll to explore</span>
             <ArrowDown className="h-4 w-4" />
           </motion.div>
         </motion.div>

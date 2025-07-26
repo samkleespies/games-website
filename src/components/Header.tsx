@@ -50,9 +50,9 @@ export default function Header() {
             <div className="p-2 bg-neon-cyan/10 border border-neon-cyan/30 rounded">
               <Cpu className="h-6 w-6 text-neon-cyan" />
             </div>
-            <div className="font-display font-bold">
-              <span className="text-foreground text-lg">Sam</span>
-              <span className="text-neon-cyan text-lg ml-1">Kleespies</span>
+            <div className="font-display font-bold select-none">
+              <span className="text-neon-cyan text-lg">samkleespies</span>
+              <span className="text-foreground text-lg">.dev</span>
             </div>
           </motion.div>
 
@@ -66,7 +66,7 @@ export default function Header() {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 + 0.3 }}
-                  className="text-foreground/80 hover:text-neon-cyan transition-all duration-300 font-display font-medium relative group tracking-wider text-sm"
+                  className="text-foreground/80 hover:text-neon-cyan transition-all duration-300 font-display font-medium relative group tracking-wider text-sm select-none"
                 >
                   <span className="relative z-10">{item.name}</span>
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-neon-cyan transition-all duration-300 group-hover:w-full shadow-[0_0_10px_currentColor]" />
@@ -115,7 +115,7 @@ export default function Header() {
                     className="absolute right-0 top-full mt-2 w-64 bg-black/95 backdrop-blur-md border border-neon-cyan/30 rounded shadow-lg shadow-neon-cyan/20"
                   >
                     <div className="p-4 space-y-3">
-                      <div className="text-neon-cyan font-display text-sm tracking-wider mb-3 border-b border-neon-cyan/20 pb-2">
+                      <div className="text-neon-cyan font-display text-sm tracking-wider mb-3 border-b border-neon-cyan/20 pb-2 select-none">
                         CONTACT INFO
                       </div>
                       

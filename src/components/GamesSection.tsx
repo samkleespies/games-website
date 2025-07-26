@@ -82,12 +82,11 @@ export default function GamesSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-8"
         >
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-            <span className="text-gradient">My Games</span>
+          <h2 className="text-4xl sm:text-5xl font-bold mb-6 select-none">
+            <span className="text-gradient">Games</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Explore my collection of interactive experiences. Each game is playable directly in your browser
-            and represents a unique challenge I&apos;ve tackled in game development.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 select-none">
+            Explore and play my games
           </p>
 
 
@@ -226,7 +225,7 @@ export default function GamesSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 select-none"
         >
           {filteredGames.map((game, index) => (
             <GameCard
