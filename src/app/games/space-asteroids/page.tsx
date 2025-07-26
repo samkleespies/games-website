@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Gamepad2, Trophy, Download, ExternalLink, Maximize2, Minimize2 } from 'lucide-react'
+import { ArrowLeft, Gamepad2, Download, ExternalLink, Maximize2, Minimize2 } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import Leaderboard from '@/components/Leaderboard'

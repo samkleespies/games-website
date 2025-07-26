@@ -4,11 +4,10 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Play, Github, ExternalLink, Calendar, Tag, Monitor } from 'lucide-react'
+import { Play, Github, ExternalLink, Tag } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Game } from '@/types/game'
-import { cn } from '@/lib/utils'
 
 interface GameCardProps {
   game: Game
@@ -18,7 +17,7 @@ interface GameCardProps {
 export default function GameCard({ game, index }: GameCardProps) {
   const router = useRouter()
   const [isHovered, setIsHovered] = useState(false)
-  const [imageLoaded, setImageLoaded] = useState(false)
+
   const [imageError, setImageError] = useState(false)
 
   const cardVariants = {
@@ -73,7 +72,6 @@ export default function GameCard({ game, index }: GameCardProps) {
             className="object-cover transition-all duration-700 group-hover:scale-110"
             onLoad={() => {
               console.log('Image loaded:', game.thumbnail)
-              setImageLoaded(true)
             }}
             onError={(e) => {
               console.error('Image failed to load:', game.thumbnail, e)

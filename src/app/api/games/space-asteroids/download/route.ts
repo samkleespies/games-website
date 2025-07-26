@@ -1,9 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { readFile } from 'fs/promises'
-import { createReadStream } from 'fs'
-import path from 'path'
+import { NextResponse } from 'next/server'
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // For now, let's create a simple text response that explains how to get the game
     // This avoids the archiver dependency issue

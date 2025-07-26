@@ -16,7 +16,7 @@ export default function Home() {
             <span className="text-gradient">About Me</span>
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed mb-8 select-none">
-            I'm a software engineer and I like to make games in my free time. My favorite game is
+            I&apos;m a software engineer and I like to make games in my free time. My favorite game is
             The Legend of Zelda: Ocarina of Time. Notable other favorites include: Bioshock, Hollow Knight, Fallout: New Vegas,
             Super Smash Bros. Melee
           </p>
